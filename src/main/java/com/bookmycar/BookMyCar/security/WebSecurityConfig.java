@@ -55,25 +55,14 @@ public class WebSecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
-//  @Override
-//  protected void configure(HttpSecurity http) throws Exception {
-//    http.cors().and().csrf().disable()
-//      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-//      .antMatchers("/api/test/**").permitAll()
-//      .anyRequest().authenticated();
-//
-//    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//  }
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll().and()
-            .authorizeHttpRequests().requestMatchers("/api/test/admin").hasRole("ADMIN")
+            .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
+//            .and()
+//            .authorizeHttpRequests().requestMatchers("/api/test/admin").hasRole("ADMIN")
             .anyRequest().authenticated();
 
     http.authenticationProvider(authenticationProvider());

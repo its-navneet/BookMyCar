@@ -60,9 +60,11 @@ public class AuthController {
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
     Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    System.out.println(authentication.getPrincipal());
 
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -72,7 +74,7 @@ public class AuthController {
         .map(GrantedAuthority::getAuthority)
         .collect(Collectors.toList());
 
-    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie)
         .body(new UserInfoResponse(userDetails.getId(),
                                    userDetails.getUsername(),
                                    userDetails.getEmail(),
@@ -114,7 +116,7 @@ public class AuthController {
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(adminRole);
           break;
-          case "mod":
+          case "car_owner":
             Role modRole = roleRepository.findByName(ERole.CAR_OWNER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(modRole);

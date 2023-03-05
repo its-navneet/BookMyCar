@@ -2,6 +2,7 @@ package com.bookmycar.BookMyCar.security;
 
 import java.io.IOException;
 
+import com.bookmycar.BookMyCar.service.UserDetailsImpl;
 import com.bookmycar.BookMyCar.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,21 +26,21 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   protected void doFilterInternal (HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
     String authorization = httpServletRequest.getHeader("Authorization");
     String token = null;
-    String userName = null;
+    String email = null;
 
     if (null != authorization && authorization.startsWith("Bearer ")) {
       token = authorization.substring(7);
-      userName = jwtUtility.getUsernameFromToken(token);
+      email = jwtUtility.getEmailFromToken(token);
     }
 
-    if (userName!=null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      UserDetails userDetails = userService.loadUserByUsername(userName);
+    if (email!=null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+      UserDetailsImpl userDetails = userService.loadUserByUsername(email);
 
       if (jwtUtility.validateToken(token, userDetails)) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(userDetails,
                 null, userDetails.getAuthorities());
-
         usernamePasswordAuthenticationToken.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(httpServletRequest)
         );
