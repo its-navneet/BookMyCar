@@ -1,28 +1,22 @@
 package com.bookmycar.BookMyCar.controller;
 
-import com.bookmycar.BookMyCar.model.ERole;
-import com.bookmycar.BookMyCar.model.Role;
 import com.bookmycar.BookMyCar.model.User;
 import com.bookmycar.BookMyCar.payload.request.LoginRequest;
 import com.bookmycar.BookMyCar.payload.request.SignupRequest;
 import com.bookmycar.BookMyCar.payload.response.MessageResponse;
 import com.bookmycar.BookMyCar.payload.response.UserInfoResponse;
-import com.bookmycar.BookMyCar.repository.RoleRepository;
 import com.bookmycar.BookMyCar.repository.UserRepository;
 import com.bookmycar.BookMyCar.security.JwtUtils;
 import com.bookmycar.BookMyCar.service.UserDetailsImpl;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,8 +41,7 @@ public class AuthController {
   @Autowired
   UserRepository userRepository;
 
-  @Autowired
-  RoleRepository roleRepository;
+
 
   @Autowired
   PasswordEncoder encoder;
@@ -63,8 +56,6 @@ public class AuthController {
         new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
-
-    System.out.println(authentication.getPrincipal());
 
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -96,40 +87,14 @@ public class AuthController {
     }
 
     // Create new user's account
-
     User user = new User(signUpRequest.getUsername(),
                          signUpRequest.getEmail(),
-                         encoder.encode(signUpRequest.getPassword()));
-
-    Set<String> strRoles = signUpRequest.getRoles();
-    Set<Role> roles = new HashSet<>();
-
-    if (strRoles.isEmpty()) {
-      Role userRole = roleRepository.findByName(ERole.CUSTOMER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
-    } else {
-      strRoles.forEach(role -> {
-        switch (role) {
-          case "admin":
-            Role adminRole = roleRepository.findByName(ERole.ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
-          break;
-          case "car_owner":
-            Role modRole = roleRepository.findByName(ERole.CAR_OWNER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(modRole);
-            break;
-          default:
-            Role userRole = roleRepository.findByName(ERole.CUSTOMER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        }
-      });
-    }
-    user.setRoles(roles);
+                         encoder.encode(signUpRequest.getPassword()), signUpRequest.getRole(),
+            signUpRequest.getProfilePic());
     user.setAccountCreatedOn(new Date());
+    if(signUpRequest.getRole().equals("CAR_OWNER")){
+      user.setAddress(signUpRequest.getAddress());
+    }
     userRepository.save(user);
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }

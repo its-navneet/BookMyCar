@@ -2,11 +2,14 @@ package com.bookmycar.BookMyCar.service;
 
 import com.bookmycar.BookMyCar.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -23,33 +26,31 @@ public class UserDetailsImpl implements UserDetails {
   @JsonIgnore
   private String password;
 
-  private Collection<? extends GrantedAuthority> authorities;
+  private GrantedAuthority authority;
 
   public UserDetailsImpl(String id, String username, String email, String password,
-      Collection<? extends GrantedAuthority> authorities) {
+      GrantedAuthority authority) {
     this.id = id;
     this.username = username;
     this.email = email;
     this.password = password;
-    this.authorities = authorities;
+    this.authority = authority;
   }
 
   public static UserDetailsImpl build(User user) {
-    List<GrantedAuthority> authorities = user.getRoles().stream()
-        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-        .collect(Collectors.toList());
+    GrantedAuthority authority =new SimpleGrantedAuthority(user.getRole());
 
     return new UserDetailsImpl(
         user.getId(), 
         user.getUsername(), 
         user.getEmail(),
         user.getPassword(), 
-        authorities);
+        authority);
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return authorities;
+    return Collections.singleton(authority);
   }
 
   public String getId() {

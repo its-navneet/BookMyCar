@@ -1,11 +1,17 @@
 package com.bookmycar.BookMyCar.payload.request;
 
+import com.bookmycar.BookMyCar.model.Car;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
-import java.util.Set;
-
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import java.util.List;
+@Getter
+@Setter
+@Data
 public class SignupRequest {
   @NotBlank
   @Size(min = 3, max = 20)
@@ -16,41 +22,18 @@ public class SignupRequest {
   @Email
   private String email;
 
-  private Set<String> roles;
+  private String role;
 
   @NotBlank
   @Size(min = 6, max = 40)
   private String password;
 
-  public String getUsername() {
-    return username;
-  }
+  private String profilePic;
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+  private String address;
 
-  public String getEmail() {
-    return email;
-  }
+  @Max(5)
+  private int rating;
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public Set<String> getRoles() {
-    return this.roles;
-  }
-
-  public void setRole(Set<String> roles) {
-    this.roles = roles;
-  }
+  private List<Car> car_list;
 }

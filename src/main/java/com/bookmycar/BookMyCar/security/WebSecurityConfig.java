@@ -1,5 +1,6 @@
 package com.bookmycar.BookMyCar.security;
 
+import com.bookmycar.BookMyCar.service.UserDetailsImpl;
 import com.bookmycar.BookMyCar.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -60,9 +61,11 @@ public class WebSecurityConfig {
     http.cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
-//            .and()
-//            .authorizeHttpRequests().requestMatchers("/api/test/admin").hasRole("ADMIN")
+            .authorizeHttpRequests().requestMatchers("/api/**").permitAll()
+            .and()
+            .authorizeHttpRequests().requestMatchers("/api/customer/**").hasRole("CUSTOMER")
+            .and()
+            .authorizeHttpRequests().requestMatchers("/api/car_owner/**").hasRole("CAR_OWNER")
             .anyRequest().authenticated();
 
     http.authenticationProvider(authenticationProvider());
