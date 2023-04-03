@@ -17,26 +17,28 @@ public class CarOwnerController {
     CarOwnerService carOwnerService;
 
     @PostMapping("/addCar")
-    public ResponseEntity<?> addCar(@RequestBody Car car){
+    public ResponseEntity<?> addCar (@RequestBody Car car) {
         carOwnerService.addCar(car);
         return ResponseEntity.ok(new MessageResponse("Car registered successfully!"));
     }
+
     @PatchMapping("/modify/{carId}/{distance}")
-    public ResponseEntity<?> updateCarDistance(@PathVariable String carId, @PathVariable int distance){
-        carOwnerService.updateDistance(carId,distance);
-        return ResponseEntity.ok(new MessageResponse("Distance travelled updated successfully!"));
-    }
-    @PatchMapping("/modify/{carId}/{insured}")
-    public ResponseEntity<?> updateCarInsured(@PathVariable String carId, @PathVariable boolean insured){
-        carOwnerService.updateCarInsured(carId,insured);
-        return ResponseEntity.ok(new MessageResponse("Distance travelled updated successfully!"));
-    }
-    @PatchMapping("/modify/{carId}/{booked}")
-    public ResponseEntity<?> updateCarBooked(@PathVariable String carId, @PathVariable boolean booked){
-        carOwnerService.updateCarBooked(carId,booked);
+    public ResponseEntity<?> updateCarDistance (@PathVariable String carId, @PathVariable int distance) {
+        carOwnerService.updateDistance(carId, distance);
         return ResponseEntity.ok(new MessageResponse("Distance travelled updated successfully!"));
     }
 
+    @PatchMapping("/modify/{carId}/{insured}")
+    public ResponseEntity<?> updateCarInsured (@PathVariable String carId, @PathVariable boolean insured) {
+        carOwnerService.updateCarInsured(carId, insured);
+        return ResponseEntity.ok(new MessageResponse("Distance travelled updated successfully!"));
+    }
+
+    @PatchMapping("/modify/{carId}/{booked}")
+    public ResponseEntity<?> updateCarBooked (@PathVariable String carId, @PathVariable boolean booked) {
+        carOwnerService.updateCarBooked(carId, booked);
+        return ResponseEntity.ok(new MessageResponse("Distance travelled updated successfully!"));
+    }
 
 
 }

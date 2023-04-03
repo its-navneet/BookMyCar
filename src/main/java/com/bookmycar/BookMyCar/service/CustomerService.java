@@ -1,5 +1,6 @@
 package com.bookmycar.BookMyCar.service;
 
+import com.bookmycar.BookMyCar.model.Car;
 import com.bookmycar.BookMyCar.model.CarModel;
 import com.bookmycar.BookMyCar.payload.request.CarOwnerDeal;
 
@@ -11,4 +12,6 @@ public interface CustomerService {
     List<CarModel> getCarModelListFromBrand (String brand);
 
     List<CarOwnerDeal> getCarOwnerListFromModel (String model);
+
+    List<Car> getCarFromOwnerAndModel (String ownerId, String modelName);
 }

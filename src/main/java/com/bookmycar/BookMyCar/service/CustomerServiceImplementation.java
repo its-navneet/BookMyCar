@@ -49,4 +49,16 @@ public class CustomerServiceImplementation implements CustomerService {
         }
         return ownerDeals;
     }
+
+    @Override
+    public List<Car> getCarFromOwnerAndModel (String ownerId, String modelName) {
+        List<Car> carList = carRepository.findByOwner(ownerId);
+        List<Car> list = new ArrayList<>();
+        for(Car car:carList){
+            if(car.getModel()==modelName){
+                list.add(car);
+            }
+        }
+        return list;
+    }
 }

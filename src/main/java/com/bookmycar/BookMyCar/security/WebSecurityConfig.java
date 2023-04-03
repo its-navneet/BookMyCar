@@ -62,11 +62,12 @@ public class WebSecurityConfig {
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeHttpRequests().requestMatchers("/api/**").permitAll()
-            .and()
-            .authorizeHttpRequests().requestMatchers("/api/customer/**").hasRole("CUSTOMER")
-            .and()
-            .authorizeHttpRequests().requestMatchers("/api/car_owner/**").hasRole("CAR_OWNER")
-            .anyRequest().authenticated();
+//            .and()
+//            .authorizeHttpRequests().requestMatchers("/api/customer/**").hasRole("CUSTOMER")
+//            .and()
+//            .authorizeHttpRequests().requestMatchers("/api/car_owner/**").hasRole("CAR_OWNER")
+            .anyRequest()
+            .authenticated();
 
     http.authenticationProvider(authenticationProvider());
 

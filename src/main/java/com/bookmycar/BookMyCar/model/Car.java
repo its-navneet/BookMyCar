@@ -4,12 +4,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Document(collection = "cars")
 @Getter
@@ -51,7 +48,7 @@ public class Car {
     private boolean insured;
 
     @NotBlank
-    private boolean booked;
+    private boolean available;
 
     @NotBlank
     private String carNumber;
