@@ -48,7 +48,7 @@ public class Car {
     private boolean insured;
 
     @NotBlank
-    private boolean available;
+    private boolean booked;
 
     @NotBlank
     private String carNumber;

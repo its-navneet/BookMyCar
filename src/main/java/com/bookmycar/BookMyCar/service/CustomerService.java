@@ -14,4 +14,6 @@ public interface CustomerService {
     List<CarOwnerDeal> getCarOwnerListFromModel (String model);
 
     List<Car> getCarFromOwnerAndModel (String ownerId, String modelName);
+
+    Car getCar(String carId);
 }

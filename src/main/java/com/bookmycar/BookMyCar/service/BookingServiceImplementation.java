@@ -26,7 +26,7 @@ public class BookingServiceImplementation implements BookingService{
     public String book (String carId, Booking booking) {
         Car selectedCar = carRepository.findById(carId).get();
         UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        selectedCar.setAvailable(true);
+        selectedCar.setBooked(true);
         booking.setCarId(carId);
         booking.setUserId(user.getId());
         booking.setOwnerId(selectedCar.getOwner());

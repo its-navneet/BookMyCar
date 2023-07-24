@@ -41,6 +41,11 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @GetMapping("/hello")
+    public String hello(){
+        return "helllo navneet";
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser (@Valid @RequestBody LoginRequest loginRequest) {
 

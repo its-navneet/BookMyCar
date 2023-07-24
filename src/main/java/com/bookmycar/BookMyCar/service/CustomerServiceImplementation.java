@@ -61,4 +61,9 @@ public class CustomerServiceImplementation implements CustomerService {
         }
         return list;
     }
+
+    @Override
+    public Car getCar(String carId) {
+        return carRepository.findById(carId).get();
+    }
 }

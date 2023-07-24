@@ -20,6 +20,11 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
+    @GetMapping("/getCar/{carId}")
+    public Car getCar (@PathVariable String carId) {
+        return customerService.getCar(carId);
+    }
+
     @GetMapping("/getCarModelsByCapacity/{capacity}")
     public List<CarModel> findCarModelFromSeatCapacity (@PathVariable int capacity) {
         return customerService.getCarModelListFromSeatCapacity(capacity);
@@ -35,7 +40,7 @@ public class CustomerController {
         return customerService.getCarOwnerListFromModel(model);
     }
 
-    @GetMapping("/getCarsFromOwnerAndModel/{ownerId}/{modelName")
+    @GetMapping("/getCarsFromOwnerAndModel/{ownerId}/{modelName}")
     private List<Car> findCarFromOwnerAndModel (@PathVariable String ownerId, @PathVariable String modelName) {
         return customerService.getCarFromOwnerAndModel(ownerId, modelName);
     }

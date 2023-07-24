@@ -14,6 +14,6 @@ public class BookMyCarApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BookMyCarApplication.class, args);
-	}
 
+	}
 }
